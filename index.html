@@ -1,271 +1,254 @@
-```html
-<!doctype html>
-<html class="h-full">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tripel Pythagoras - Multi Level</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Master Tripel Pythagoras</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Outfit', sans-serif; }
-    .shake { animation: shake 0.4s ease; }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-    .pop { animation: pop 0.4s ease; }
-    @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
-    body { box-sizing: border-box; }
-    
-    /* Custom Scrollbar untuk layar kecil */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #1a1a2e; }
-    ::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 10px; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f5f9;
+    }
+    .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+    .pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .fade-in { animation: fadeIn 0.3s ease-in forwards; }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    input[type="number"]::-webkit-inner-spin-button, 
+    input[type="number"]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; margin: 0; 
+    }
   </style>
 </head>
-<body class="h-full bg-[#1a1a2e] text-white overflow-auto flex items-center justify-center p-6">
+<body class="h-screen w-full flex items-center justify-center p-4 text-slate-800">
 
-  <!-- ================= MENU SCREEN ================= -->
-  <div id="menu-screen" class="w-full max-w-md flex flex-col items-center justify-center transition-all duration-300">
-    <div class="mb-4 bg-[#16213e] p-4 rounded-full border-2 border-[#e94560]">
-      <i data-lucide="triangle" class="w-12 h-12 text-[#e94560]"></i>
+  <div id="menu-screen" class="w-full max-w-md bg-white rounded-3xl p-8 shadow-xl text-center fade-in">
+    <div class="mb-8">
+      <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-2xl mx-auto flex items-center justify-center mb-4">
+        <i data-lucide="triangle" class="w-10 h-10"></i>
+      </div>
+      <h1 class="text-3xl font-800 text-slate-900 tracking-tight">Tripel Pythagoras</h1>
+      <p class="text-slate-500 mt-2 text-sm">Tebak angka yang hilang dari kelompok sisi segitiga siku-siku.</p>
     </div>
-    <h1 class="text-4xl md:text-5xl font-800 mb-2 text-center bg-gradient-to-r from-[#e94560] via-[#f5a623] to-[#4ecca3] bg-clip-text text-transparent pb-1">
-      Pythagoras
-    </h1>
-    <p class="text-[#8892b0] mb-8 text-center text-lg">Pilih level untuk mulai berlatih!</p>
-    
-    <div class="w-full flex flex-col gap-4">
-      <button onclick="startGame('mudah')" class="group relative w-full flex items-center justify-between p-5 bg-[#16213e] hover:bg-[#1a2a4f] rounded-2xl border border-[#4ecca3] transition-all hover:scale-105 active:scale-95">
-        <div class="flex flex-col text-left">
-          <span class="text-2xl font-700 text-[#4ecca3]">Mudah</span>
-          <span class="text-sm text-[#8892b0]">Tripel dasar (3,4,5 dll)</span>
+
+    <div class="space-y-3">
+      <button onclick="startGame('mudah')" class="w-full group flex items-center justify-between p-4 rounded-2xl border-2 border-emerald-100 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-200 transition-all">
+        <div class="flex items-center gap-3">
+          <div class="bg-emerald-500 text-white p-2 rounded-xl"><i data-lucide="smile" class="w-5 h-5"></i></div>
+          <div class="text-left"><p class="font-700 text-emerald-900">Level Mudah</p><p class="text-xs text-emerald-600">Angka dasar (3, 4, 5 dll)</p></div>
         </div>
-        <i data-lucide="play-circle" class="w-8 h-8 text-[#4ecca3] group-hover:text-white transition-colors"></i>
+        <i data-lucide="chevron-right" class="w-5 h-5 text-emerald-400 group-hover:text-emerald-600 transition-colors"></i>
       </button>
 
-      <button onclick="startGame('sedang')" class="group relative w-full flex items-center justify-between p-5 bg-[#16213e] hover:bg-[#1a2a4f] rounded-2xl border border-[#f5a623] transition-all hover:scale-105 active:scale-95">
-        <div class="flex flex-col text-left">
-          <span class="text-2xl font-700 text-[#f5a623]">Sedang</span>
-          <span class="text-sm text-[#8892b0]">Angka belasan (8,15,17 dll)</span>
+      <button onclick="startGame('sedang')" class="w-full group flex items-center justify-between p-4 rounded-2xl border-2 border-amber-100 bg-amber-50 hover:bg-amber-100 hover:border-amber-200 transition-all">
+        <div class="flex items-center gap-3">
+          <div class="bg-amber-500 text-white p-2 rounded-xl"><i data-lucide="zap" class="w-5 h-5"></i></div>
+          <div class="text-left"><p class="font-700 text-amber-900">Level Sedang</p><p class="text-xs text-amber-600">Angka belasan (8, 15, 17 dll)</p></div>
         </div>
-        <i data-lucide="play-circle" class="w-8 h-8 text-[#f5a623] group-hover:text-white transition-colors"></i>
+        <i data-lucide="chevron-right" class="w-5 h-5 text-amber-400 group-hover:text-amber-600 transition-colors"></i>
       </button>
 
-      <button onclick="startGame('sulit')" class="group relative w-full flex items-center justify-between p-5 bg-[#16213e] hover:bg-[#1a2a4f] rounded-2xl border border-[#e94560] transition-all hover:scale-105 active:scale-95">
-        <div class="flex flex-col text-left">
-          <span class="text-2xl font-700 text-[#e94560]">Sulit</span>
-          <span class="text-sm text-[#8892b0]">Angka puluhan besar</span>
+      <button onclick="startGame('sulit')" class="w-full group flex items-center justify-between p-4 rounded-2xl border-2 border-rose-100 bg-rose-50 hover:bg-rose-100 hover:border-rose-200 transition-all">
+        <div class="flex items-center gap-3">
+          <div class="bg-rose-500 text-white p-2 rounded-xl"><i data-lucide="flame" class="w-5 h-5"></i></div>
+          <div class="text-left"><p class="font-700 text-rose-900">Level Sulit</p><p class="text-xs text-rose-600">Angka puluhan besar</p></div>
         </div>
-        <i data-lucide="play-circle" class="w-8 h-8 text-[#e94560] group-hover:text-white transition-colors"></i>
+        <i data-lucide="chevron-right" class="w-5 h-5 text-rose-400 group-hover:text-rose-600 transition-colors"></i>
       </button>
     </div>
   </div>
 
-
-  <!-- ================= GAME SCREEN ================= -->
-  <div id="game-screen" class="w-full max-w-md hidden flex-col items-center justify-center transition-all duration-300">
-    
-    <div class="bg-[#16213e] rounded-2xl p-6 md:p-8 w-full shadow-2xl border border-[#0f3460]">
-      
-      <!-- Top Bar: Back Button & Level Badge -->
-      <div class="flex justify-between items-center mb-6">
-        <button onclick="backToMenu()" class="text-[#8892b0] hover:text-white transition flex items-center gap-1 text-sm bg-[#0f3460] px-3 py-1.5 rounded-lg">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
-        </button>
-        <span id="level-badge" class="px-3 py-1 rounded-full text-xs font-700 border uppercase tracking-wider">
-          LEVEL
-        </span>
-      </div>
-
-      <!-- Score -->
-      <div class="flex justify-between items-center mb-6 px-2">
-        <span class="text-sm text-[#8892b0] font-600">Total Benar</span> 
-        <span class="text-3xl font-800 text-white flex items-center gap-2">
-          <i data-lucide="star" class="w-6 h-6 text-[#f5a623] fill-[#f5a623]"></i>
-          <span id="score">0</span>
-        </span>
-      </div>
-      
-      <!-- Triple Display -->
-      <div class="flex items-center justify-center gap-2 md:gap-3 mb-4">
-        <div id="box-a" class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-[#0f3460] flex items-center justify-center text-xl md:text-2xl font-700 border-2 border-[#e94560]"></div>
-        <span class="text-[#8892b0] text-xl">,</span>
-        <div id="box-b" class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-[#0f3460] flex items-center justify-center text-xl md:text-2xl font-700 border-2 border-[#f5a623]"></div>
-        <span class="text-[#8892b0] text-xl">,</span>
-        <div id="box-c" class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-[#0f3460] flex items-center justify-center text-xl md:text-2xl font-700 border-2 border-[#4ecca3]"></div>
-      </div>
-      <p class="text-center text-xs text-[#8892b0] mb-6 tracking-wide">a² + b² = c²</p>
-      
-      <!-- Input Form -->
-      <form id="form" class="flex gap-3 mb-2">
-        <input id="answer" type="number" class="flex-1 bg-[#0f3460] border border-[#1a4080] rounded-xl px-4 py-3 text-white text-lg font-600 outline-none focus:border-[#4ecca3] transition-colors" placeholder="Jawaban..." autocomplete="off"> 
-        <button type="submit" class="bg-[#4ecca3] hover:bg-[#3db892] text-[#1a1a2e] font-800 px-6 rounded-xl transition-colors shadow-lg shadow-[#4ecca3]/20">CEK</button>
-      </form>
-      
-      <!-- Feedback & Math Explanation -->
-      <div id="feedback-container" class="min-h-[60px] flex flex-col items-center justify-center mt-2">
-        <div id="feedback" class="text-center font-700 text-lg"></div>
-        <div id="explanation" class="text-center text-xs text-[#8892b0] mt-1 font-600 hidden"></div>
-      </div>
-      
-      <!-- Next Button --> 
-      <button id="next-btn" class="hidden mt-2 w-full py-3.5 bg-gradient-to-r from-[#e94560] to-[#f5a623] hover:opacity-90 rounded-xl font-700 text-white transition-all shadow-lg shadow-[#e94560]/20 flex justify-center items-center gap-2">
-        Soal Berikutnya <i data-lucide="arrow-right" class="w-5 h-5"></i>
+  <div id="game-screen" class="hidden w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden fade-in">
+    <div class="bg-slate-900 p-5 flex items-center justify-between">
+      <button onclick="backToMenu()" class="text-slate-400 hover:text-white transition flex items-center gap-1 text-sm font-500">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
       </button>
+      <div id="level-badge" class="px-3 py-1 rounded-full text-xs font-700 uppercase tracking-wider"></div>
+      <div class="text-slate-300 text-sm font-600">Skor: <span id="score" class="text-white text-lg ml-1">0</span></div>
+    </div>
 
+    <div class="p-8">
+      <p class="text-center text-slate-400 text-sm mb-6">Satu set Tripel Pythagoras</p>
+      
+      <div class="flex items-center justify-center gap-3 mb-8" id="box-container">
+        </div>
+
+      <form id="answer-form" class="relative">
+        <input id="answer-input" type="number" class="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-5 py-4 text-center text-2xl font-700 text-slate-800 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all placeholder:text-slate-300 placeholder:text-base placeholder:font-500" placeholder="Ketik jawabanmu di sini..." autocomplete="off">
+        <button type="submit" id="submit-btn" class="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-xl font-600 transition-colors">Cek</button>
+      </form>
+
+      <div id="feedback-area" class="hidden mt-6 text-center pop-in">
+        <div id="feedback-icon" class="mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-3"></div>
+        <h3 id="feedback-title" class="font-800 text-lg mb-1"></h3>
+        <div id="feedback-desc" class="text-sm font-500 px-4 py-3 rounded-xl inline-block mt-2"></div>
+        
+        <button id="next-btn" class="w-full mt-6 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-600 transition shadow-lg shadow-slate-900/20">
+          Soal Berikutnya <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
-    // Inisialisasi Icon Lucide
-    lucide.createIcons();
-
-    // Database Soal berdasarkan Level
-    const levelsData = {
-      mudah: {
-        color: '#4ecca3',
-        label: 'Mudah',
-        triples: [[3,4,5], [6,8,10], [9,12,15], [5,12,13], [10,24,26]]
-      },
-      sedang: {
-        color: '#f5a623',
-        label: 'Sedang',
-        triples: [[8,15,17], [16,30,34], [7,24,25], [14,48,50], [12,16,20], [15,20,25]]
-      },
-      sulit: {
-        color: '#e94560',
-        label: 'Sulit',
-        triples: [[9,40,41], [11,60,61], [20,21,29], [12,35,37], [28,45,53], [16,63,65]]
-      }
+    const databaseSoal = {
+      mudah: [[3,4,5], [6,8,10], [9,12,15], [5,12,13], [10,24,26]],
+      sedang: [[8,15,17], [16,30,34], [7,24,25], [14,48,50], [12,16,20], [15,20,25]],
+      sulit: [[9,40,41], [11,60,61], [20,21,29], [12,35,37], [28,45,53], [13,84,85]]
     };
 
-    let currentLevel = 'mudah';
-    let score = 0;
-    let currentTriple = null;
-    let missingIdx = 0;
+    let skorSaatIni = 0;
+    let levelSaatIni = '';
+    let soalAsli = []; 
+    let jawabanBenar = 0;
 
-    // Elemen UI
-    const menuScreen = document.getElementById('menu-screen');
-    const gameScreen = document.getElementById('game-screen');
-    const inputAnswer = document.getElementById('answer');
-    const feedback = document.getElementById('feedback');
-    const explanation = document.getElementById('explanation');
-    const nextBtn = document.getElementById('next-btn');
+    lucide.createIcons();
 
-    // Fungsi Mulai Game
     function startGame(level) {
-      currentLevel = level;
-      score = 0;
-      document.getElementById('score').textContent = score;
+      levelSaatIni = level;
+      skorSaatIni = 0;
+      updateScore();
       
-      // Update Level Badge UI
       const badge = document.getElementById('level-badge');
-      badge.textContent = levelsData[level].label;
-      badge.style.color = levelsData[level].color;
-      badge.style.borderColor = levelsData[level].color;
-      badge.style.backgroundColor = levelsData[level].color + '15'; // transparansi 15%
+      if (level === 'mudah') { badge.className = 'px-3 py-1 rounded-full text-xs font-700 uppercase tracking-wider bg-emerald-500/20 text-emerald-400'; badge.innerText = 'Mudah'; }
+      if (level === 'sedang') { badge.className = 'px-3 py-1 rounded-full text-xs font-700 uppercase tracking-wider bg-amber-500/20 text-amber-400'; badge.innerText = 'Sedang'; }
+      if (level === 'sulit') { badge.className = 'px-3 py-1 rounded-full text-xs font-700 uppercase tracking-wider bg-rose-500/20 text-rose-400'; badge.innerText = 'Sulit'; }
 
-      // Transisi Layar
-      menuScreen.classList.add('hidden');
-      gameScreen.classList.remove('hidden');
-      gameScreen.classList.add('pop');
-      setTimeout(() => gameScreen.classList.remove('pop'), 400);
-
-      newQuestion();
+      document.getElementById('menu-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+      buatSoalBaru();
     }
 
-    // Fungsi Kembali ke Menu
     function backToMenu() {
-      gameScreen.classList.add('hidden');
-      menuScreen.classList.remove('hidden');
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('menu-screen').classList.remove('hidden');
     }
 
-    // Fungsi Buat Pertanyaan Baru
-    function newQuestion() {
-      const activeTriples = levelsData[currentLevel].triples;
-      const t = activeTriples[Math.floor(Math.random() * activeTriples.length)];
-      missingIdx = Math.floor(Math.random() * 3);
-      currentTriple = [...t];
+    function updateScore() {
+      document.getElementById('score').innerText = skorSaatIni;
+    }
+
+    function buatSoalBaru() {
+      const bankSoal = databaseSoal[levelSaatIni];
+      // Ambil array asli untuk menyimpan data rumus (misal [3, 4, 5])
+      soalAsli = [...bankSoal[Math.floor(Math.random() * bankSoal.length)]];
       
-      const labels = ['box-a', 'box-b', 'box-c'];
+      // Salin array untuk diacak tampilannya
+      let soalAcak = [...soalAsli];
       
-      labels.forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (i === missingIdx) { 
-          el.textContent = '?'; 
-          el.classList.add('text-white', 'bg-[#1a4080]'); 
-        } else { 
-          el.textContent = t[i]; 
-          el.classList.remove('text-white', 'bg-[#1a4080]'); 
+      // LOGIKA PENGACAKAN BARU YANG LEBIH KONSISTEN (Fisher-Yates Shuffle)
+      for (let i = soalAcak.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [soalAcak[i], soalAcak[j]] = [soalAcak[j], soalAcak[i]];
+      }
+      
+      // Tentukan kotak mana yang mau dihilangkan
+      const indexKotakKosong = Math.floor(Math.random() * 3);
+      jawabanBenar = soalAcak[indexKotakKosong];
+
+      // Render ke HTML
+      const boxContainer = document.getElementById('box-container');
+      boxContainer.innerHTML = '';
+      
+      soalAcak.forEach((angka, i) => {
+        const box = document.createElement('div');
+        box.className = 'w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-800 shadow-sm border-2';
+        
+        if (i === indexKotakKosong) {
+          box.textContent = '?';
+          box.classList.add('bg-indigo-50', 'text-indigo-600', 'border-indigo-200');
+        } else {
+          box.textContent = angka;
+          box.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+        }
+        
+        boxContainer.appendChild(box);
+
+        if (i < 2) {
+          const koma = document.createElement('span');
+          koma.className = 'text-slate-300 text-2xl font-700';
+          koma.textContent = ',';
+          boxContainer.appendChild(koma);
         }
       });
+
+      const input = document.getElementById('answer-input');
+      input.value = '';
+      input.disabled = false;
+      document.getElementById('submit-btn').disabled = false;
+      document.getElementById('feedback-area').classList.add('hidden');
+      document.getElementById('feedback-area').classList.remove('pop-in');
       
-      // Reset State UI
-      inputAnswer.value = '';
-      inputAnswer.disabled = false;
-      feedback.textContent = '';
-      explanation.classList.add('hidden');
-      nextBtn.classList.add('hidden');
-      inputAnswer.focus();
+      setTimeout(() => input.focus(), 100);
     }
 
-    // Fungsi Cek Jawaban
-    document.getElementById('form').addEventListener('submit', e => {
+    document.getElementById('answer-form').addEventListener('submit', (e) => {
       e.preventDefault();
       
-      // Jika tombol submit ditekan saat disabled (soal sudah terjawab), hiraukan.
-      if(inputAnswer.disabled) return;
+      const inputVal = parseInt(document.getElementById('answer-input').value);
+      if (isNaN(inputVal)) return;
 
-      const val = parseInt(inputAnswer.value);
-      if (isNaN(val)) return;
+      const inputElement = document.getElementById('answer-input');
+      const feedbackArea = document.getElementById('feedback-area');
+      const feedbackIcon = document.getElementById('feedback-icon');
+      const feedbackTitle = document.getElementById('feedback-title');
+      const feedbackDesc = document.getElementById('feedback-desc');
+
+      feedbackArea.classList.remove('hidden');
       
-      const correct = currentTriple[missingIdx];
-      const a = currentTriple[0];
-      const b = currentTriple[1];
-      const c = currentTriple[2];
-      
-      // Hitung kuadrat untuk pembahasan
-      const a2 = a * a;
-      const b2 = b * b;
-      const c2 = c * c;
-      const mathText = `${a}² + ${b}² = ${c}² &nbsp;&rarr;&nbsp; ${a2} + ${b2} = ${c2}`;
-      
-      if (val === correct) {
-        // Benar
-        score++;
-        document.getElementById('score').textContent = score;
-        document.getElementById('score').parentElement.classList.add('pop');
-        setTimeout(() => document.getElementById('score').parentElement.classList.remove('pop'), 400);
+      // Pembahasan selalu menggunakan urutan asli (a, b, c) agar rumusnya masuk akal
+      const a = soalAsli[0], b = soalAsli[1], c = soalAsli[2];
+      const teksPembahasan = `${a}² + ${b}² = ${c}² <br> <span class="text-xs opacity-75">(${a*a} + ${b*b} = ${c*c})</span>`;
+
+      if (inputVal === jawabanBenar) {
+        skorSaatIni += 10;
+        updateScore();
+        inputElement.disabled = true;
+        document.getElementById('submit-btn').disabled = true;
+
+        feedbackIcon.className = 'mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-3 bg-emerald-100 text-emerald-600';
+        feedbackIcon.innerHTML = '<i data-lucide="check" class="w-6 h-6"></i>';
+        feedbackTitle.className = 'font-800 text-lg mb-1 text-emerald-600';
+        feedbackTitle.innerText = 'Tepat Sekali!';
         
-        feedback.innerHTML = '<span class="text-[#4ecca3] flex justify-center items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> Tepat Sekali!</span>';
-        
-        // Tampilkan Pembahasan
-        explanation.innerHTML = mathText;
-        explanation.classList.remove('hidden');
-        
-        // Disable input & show next
-        inputAnswer.disabled = true;
-        nextBtn.classList.remove('hidden');
-        lucide.createIcons();
-        nextBtn.focus();
+        feedbackDesc.className = 'text-sm font-500 px-4 py-3 rounded-xl inline-block mt-2 bg-emerald-50 border border-emerald-100 text-emerald-800';
+        feedbackDesc.innerHTML = teksPembahasan;
         
       } else {
-        // Salah
-        feedback.innerHTML = `<span class="text-[#e94560] flex justify-center items-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> Ups, salah! Coba lagi.</span>`;
-        inputAnswer.parentElement.classList.add('shake');
-        setTimeout(() => inputAnswer.parentElement.classList.remove('shake'), 400);
+        inputElement.parentElement.classList.remove('shake');
+        void inputElement.parentElement.offsetWidth;
+        inputElement.parentElement.classList.add('shake');
         
-        inputAnswer.value = '';
-        inputAnswer.focus();
-        lucide.createIcons();
+        feedbackIcon.className = 'mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-3 bg-rose-100 text-rose-600';
+        feedbackIcon.innerHTML = '<i data-lucide="x" class="w-6 h-6"></i>';
+        feedbackTitle.className = 'font-800 text-lg mb-1 text-rose-600';
+        feedbackTitle.innerText = `Salah! Jawabannya: ${jawabanBenar}`;
+
+        feedbackDesc.className = 'text-sm font-500 px-4 py-3 rounded-xl inline-block mt-2 bg-rose-50 border border-rose-100 text-rose-800';
+        feedbackDesc.innerHTML = teksPembahasan;
       }
+      
+      lucide.createIcons();
+      feedbackArea.classList.add('pop-in');
     });
 
-    // Event Listener untuk Tombol Next
-    nextBtn.addEventListener('click', newQuestion);
+    document.getElementById('next-btn').addEventListener('click', buatSoalBaru);
 
   </script>
 </body>
 </html>
-
-```
