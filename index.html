@@ -50,7 +50,7 @@
       <button onclick="startGame('mudah')" class="w-full group flex items-center justify-between p-4 rounded-2xl border-2 border-emerald-100 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-200 transition-all">
         <div class="flex items-center gap-3">
           <div class="bg-emerald-500 text-white p-2 rounded-xl"><i data-lucide="smile" class="w-5 h-5"></i></div>
-          <div class="text-left"><p class="font-700 text-emerald-900">Level Mudah</p><p class="text-xs text-emerald-600">Angka dasar (3, 4, 5 dll)</p></div>
+          <div class="text-left"><p class="font-700 text-emerald-900">Level Mudah</p><p class="text-xs text-emerald-600">3,4,5 | 5,12,13 | 7,24,25 & kelipatan</p></div>
         </div>
         <i data-lucide="chevron-right" class="w-5 h-5 text-emerald-400 group-hover:text-emerald-600 transition-colors"></i>
       </button>
@@ -58,7 +58,7 @@
       <button onclick="startGame('sedang')" class="w-full group flex items-center justify-between p-4 rounded-2xl border-2 border-amber-100 bg-amber-50 hover:bg-amber-100 hover:border-amber-200 transition-all">
         <div class="flex items-center gap-3">
           <div class="bg-amber-500 text-white p-2 rounded-xl"><i data-lucide="zap" class="w-5 h-5"></i></div>
-          <div class="text-left"><p class="font-700 text-amber-900">Level Sedang</p><p class="text-xs text-amber-600">Angka belasan (8, 15, 17 dll)</p></div>
+          <div class="text-left"><p class="font-700 text-amber-900">Level Sedang</p><p class="text-xs text-amber-600">8,15,17 | 9,40,41 | 11,60,61 & kelipatan</p></div>
         </div>
         <i data-lucide="chevron-right" class="w-5 h-5 text-amber-400 group-hover:text-amber-600 transition-colors"></i>
       </button>
@@ -66,7 +66,7 @@
       <button onclick="startGame('sulit')" class="w-full group flex items-center justify-between p-4 rounded-2xl border-2 border-rose-100 bg-rose-50 hover:bg-rose-100 hover:border-rose-200 transition-all">
         <div class="flex items-center gap-3">
           <div class="bg-rose-500 text-white p-2 rounded-xl"><i data-lucide="flame" class="w-5 h-5"></i></div>
-          <div class="text-left"><p class="font-700 text-rose-900">Level Sulit</p><p class="text-xs text-rose-600">Angka puluhan besar</p></div>
+          <div class="text-left"><p class="font-700 text-rose-900">Level Sulit</p><p class="text-xs text-rose-600">Beragam tripel acak tanpa kelipatan</p></div>
         </div>
         <i data-lucide="chevron-right" class="w-5 h-5 text-rose-400 group-hover:text-rose-600 transition-colors"></i>
       </button>
@@ -106,10 +106,31 @@
   </div>
 
   <script>
+    // DATABASE SOAL YANG TELAH DIPERBARUI
     const databaseSoal = {
-      mudah: [[3,4,5], [6,8,10], [9,12,15], [5,12,13], [10,24,26]],
-      sedang: [[8,15,17], [16,30,34], [7,24,25], [14,48,50], [12,16,20], [15,20,25]],
-      sulit: [[9,40,41], [11,60,61], [20,21,29], [12,35,37], [28,45,53], [13,84,85]]
+      mudah: [
+        // 3, 4, 5 dan kelipatannya
+        [3, 4, 5], [6, 8, 10], [9, 12, 15], [12, 16, 20], [15, 20, 25],
+        // 5, 12, 13 dan kelipatannya
+        [5, 12, 13], [10, 24, 26], [15, 36, 39], [20, 48, 52],
+        // 7, 24, 25 dan kelipatannya
+        [7, 24, 25], [14, 48, 50], [21, 72, 75]
+      ],
+      sedang: [
+        // 8, 15, 17 dan kelipatannya
+        [8, 15, 17], [16, 30, 34], [24, 45, 51], [32, 60, 68],
+        // 9, 40, 41 dan kelipatannya
+        [9, 40, 41], [18, 80, 82], [27, 120, 123],
+        // 11, 60, 61 dan kelipatannya
+        [11, 60, 61], [22, 120, 122], [33, 180, 183]
+      ],
+      sulit: [
+        // Tripel Primitif Lainnya (Tanpa Kelipatan)
+        [12, 35, 37], [13, 84, 85], [15, 112, 113], [16, 63, 65],
+        [17, 144, 145], [20, 21, 29], [20, 99, 101], [28, 45, 53],
+        [33, 56, 65], [36, 77, 85], [39, 80, 89], [48, 55, 73],
+        [60, 91, 109], [65, 72, 97], [88, 105, 137], [119, 120, 169]
+      ]
     };
 
     let skorSaatIni = 0;
@@ -145,23 +166,19 @@
 
     function buatSoalBaru() {
       const bankSoal = databaseSoal[levelSaatIni];
-      // Ambil array asli untuk menyimpan data rumus (misal [3, 4, 5])
       soalAsli = [...bankSoal[Math.floor(Math.random() * bankSoal.length)]];
       
-      // Salin array untuk diacak tampilannya
       let soalAcak = [...soalAsli];
       
-      // LOGIKA PENGACAKAN BARU YANG LEBIH KONSISTEN (Fisher-Yates Shuffle)
+      // Fisher-Yates Shuffle
       for (let i = soalAcak.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [soalAcak[i], soalAcak[j]] = [soalAcak[j], soalAcak[i]];
       }
       
-      // Tentukan kotak mana yang mau dihilangkan
       const indexKotakKosong = Math.floor(Math.random() * 3);
       jawabanBenar = soalAcak[indexKotakKosong];
 
-      // Render ke HTML
       const boxContainer = document.getElementById('box-container');
       boxContainer.innerHTML = '';
       
@@ -211,7 +228,6 @@
 
       feedbackArea.classList.remove('hidden');
       
-      // Pembahasan selalu menggunakan urutan asli (a, b, c) agar rumusnya masuk akal
       const a = soalAsli[0], b = soalAsli[1], c = soalAsli[2];
       const teksPembahasan = `${a}² + ${b}² = ${c}² <br> <span class="text-xs opacity-75">(${a*a} + ${b*b} = ${c*c})</span>`;
 
